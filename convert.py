@@ -93,6 +93,8 @@ def run(args):
 
     files, count = get_files(args.input_path)
 
+    labels = open(os.path.join(args.output_path, dirs[2], "labels.txt"), "w", encoding="utf8")
+
     start_time = time.time()
     digits = len(str(count))
     for ii, file_name in enumerate(files):
@@ -104,8 +106,6 @@ def run(args):
         clova_json_file = request_recognition_from_clova_ocr(args, dirs[1], file_name)
         # clova_json_file = f"{dirs[1]}/{name}_clova.json"
         print(f"clova_json: {clova_json_file}")
-
-        labels = open(os.path.join(args.output_path, dirs[2], "labels.txt"), "w", encoding="utf8")
 
         with open(os.path.join(clova_json_file)) as f:
             json_data = json.load(f)
@@ -151,7 +151,7 @@ def run(args):
         with open(os.path.join(dirs[3], name + ".json"), 'w', encoding='utf-8') as outfile:
             json.dump(json_dict, outfile, ensure_ascii=False, indent="\t")
 
-        labels.close()
+    labels.close()
 
     elapsed_time = (time.time() - start_time) / 60.
     print("\n- processing time: %.1fmin" % elapsed_time)
